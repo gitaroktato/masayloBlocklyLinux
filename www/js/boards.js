@@ -175,7 +175,7 @@ var profile = {
 		voltage: "5V",
 		inout: "20"
 	},
-
+	
 	nanooptiboot: {
 	    description: "Arduino Nano",
 	    BUILTIN_LED: 13,
@@ -189,7 +189,7 @@ var profile = {
                 ['31250', '31250'], ['38400', '38400'], ['57600', '57600'],
                 ['115200', '115200']],
 		serialPin: [["Rx/Tx", "0"]],
-		build: "nano",
+		build: "nanooptiboot",
 		cpu: "atmega328p",
 		speed: "115200",
 		prog: "arduino",

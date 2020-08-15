@@ -10,4 +10,4 @@ else
   ./arduino-cli upload --port $1 --fqbn arduino:avr:$2 sketch
 fi
 
-./arduino-cli upload --port $1 --fqbn arduino:avr:$2 sketch
+

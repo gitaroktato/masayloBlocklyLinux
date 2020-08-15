@@ -1,11 +1,13 @@
 {
  "name": "Masaylo",
- "version": "1.8.0",
- "description": "environnement de développement pour langage graphique",
- "author": "Fontaine Jean Philippe",
+ "version": "1.0.2",
+ "description": "Entorno de desarrollo para programación en robótica",
+ "author": "Antonio Gómez García y Lola Nogueras Atance, about a great job made by Fontaine Jean Philippe",
  "license": "CC0-1.0",
  "main": "electronAppLinux.js",
  "keywords": [
+  "masaylo",
+  "MASAYLO",
   "blockly",
   "BLOCKLY",
   "arduino",
@@ -31,39 +33,38 @@
   "postinstall": "electron-builder install-app-deps",
   "start": "electron .",
   "compiler": "build --linux --x64",
-  "publier": "build --win --ia32 -p always"
+  "publier": "build --linux --x64 -p always"
  },
  "build": {
-  "appId": "com.electron.blocklino",
+  "appId": "com.electron.masaylo",
   "asar": false,
   "directories": {
    "buildResources": "./build",
-   "output": "../dist"
+   "output": "./dist"
   },
   "nsis": {
-   "installerIcon": "build/install.ico",
-   "uninstallerIcon": "build/app.ico",
+   "installerIcon": "build/installM.ico",
+   "uninstallerIcon": "build/appM.ico",
    "oneClick": false,
    "perMachine": true,
    "deleteAppDataOnUninstall": true,
    "allowToChangeInstallationDirectory": true,
    "runAfterFinish": true,
-   "include": "build/blocklino.nsh"
+   "include": "build/masaylo.nsh"
   },
   "win": {
    "target": [
     "nsis",
-    "portable",
-    "zip"
+    "portable"
    ],
-   "icon": "build/app.ico"
+   "icon": "build/appM2.ico"
   },
   "fileAssociations": [
    {
     "ext": "bloc",
     "name": "BLOC File",
     "role": "Editor",
-    "icon": "build/bloc.ico"
+    "icon": "build/appM2.ico"
    },
    {
     "ext": "bf",
@@ -97,12 +98,13 @@
    }
   ],
   "extraFiles": [
-   "www",
-   "compilation",
-   "pilotes",
-   "README.md",
-   "LICENSE.md",
-   "config.json"
+   {
+    "from": "www",
+    "to": "www",
+    "filter": [
+     "**/*"
+    ]
+   }
   ],
   "extraResources": [
    "dev-app-update.yml",
@@ -111,18 +113,18 @@
   "publish": [
    {
     "provider": "github",
-    "repo": "blocklino",
-    "owner": "fontainejp",
+    "repo": "masayloBlockly",
+    "owner": "agomezgar",
     "releaseType": "release"
    }
   ]
  },
  "repository": {
   "type": "git",
-  "url": "https://github.com/fontainejp/blocklino"
+  "url": "https://github.com/agomezgar/masayloBlockly"
  },
  "bugs": {
-  "url": "https://github.com/fontainejp/blocklino/issues"
+  "url": "https://github.com/agomezgar/masayloBlockly"
  },
  "devDependencies": {
   "electron": "4.1.1",
