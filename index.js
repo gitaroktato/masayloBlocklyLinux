@@ -3,6 +3,7 @@ var remote = require('electron').remote
 var { exec } = require('child_process')
 var sp = require('serialport')
 var fs = require('fs')
+var fs2 = require("fs-extra");
 var tableify = require('tableify')
 var appVersion = window.require('electron').remote.app.getVersion()
 var chemin = process.resourcesPath
@@ -12,6 +13,7 @@ var messageDiv = document.getElementById('messageDIV')
 var detailDiv = document.getElementById('detailDIV')
 var btn_detail = document.getElementById('btn_detail')
 var btn_close_message = document.getElementById('btn_close_message')
+const homedir = require('os').homedir();
 
 window.addEventListener('load', function load(event){
 	var window = remote.getCurrentWindow()
@@ -204,9 +206,25 @@ window.addEventListener('load', function load(event){
 				itsOK(0)
 			})
 		} else {
-
-			fs.writeFile(chemin+'/compilation/arduino/sketch/sketch.ino', data, function(err){
-				if (err) return console.log('camino'+chemin+'/compilation/arduino/sketch/sketch.ino')
+if(process!="win32"){
+	console.log("no es windows, ataca...");
+	var dir=homedir+'/.masaylo';
+	console.log(dir);
+	if (!fs.existsSync(dir)){
+		console.log('preparandolo todo');
+		console.log('directorio actual: ');
+		console.log(__dirname);
+		var fuente=__dirname+('/compilation/');
+		
+		fs.mkdirSync(dir);
+		
+fs2.copy(fuente, dir, function (err) {
+	if (err) return console.error(err)
+	console.log('success!')
+  });
+	}
+	}	fs.writeFile(homedir+'/.masaylo/arduino/sketch/sketch.ino', data, function(err){
+				if (err) return console.log('error nuevo'+homedir+'/.masaylo/arduino/sketch/sketch.ino')
 			})
 			if ( cpu == "cortexM0" ) {
 				exec('verify_microbit.bat ' + carte, {cwd: chemin+'/compilation/arduino'}, function(err, stdout, stderr){
@@ -228,9 +246,10 @@ window.addEventListener('load', function load(event){
 					itsOK(0)
 				})
 			} else {
-				exec('./verify.sh ' + carte, {cwd: chemin+'/compilation/arduino/'}, function(err, stdout, stderr){
+				exec('./verify.sh ' + carte, {cwd: homedir+'/.masaylo/arduino/'}, function(err, stdout, stderr){
+					if (err) console.log('err0r: ' +carte);
 					if (stderr) {
-						fs.realpath(chemin+'/compilation/arduino/sketch/sketch.ino' , function(err, path){
+						fs.realpath(homedir+'.masaylo/arduino/sketch/sketch.ino' , function(err, path){
 
 							var erreur = stderr.toString().replace("exit status 1","")
 							var error = erreur.replace(/error:/g,"").replace(/token/g,"")
@@ -252,11 +271,8 @@ window.addEventListener('load', function load(event){
 		localStorage.setItem("verif",true)
 	})
 	$('#btn_flash').on('click', function(){
-		if (localStorage.getItem('content') == "off") {
-			var data = editor.getValue()
-		} else {
-			var data = $('#pre_previewArduino').text()
-		}
+		var data = editor.getValue()
+
 		var carte = localStorage.getItem('card')
 		var prog = profile[carte].prog
 		var speed = profile[carte].speed
@@ -278,7 +294,7 @@ window.addEventListener('load', function load(event){
 		messageDiv.innerHTML = Blockly.Msg.upload + '<i class="fa fa-spinner fa-pulse fa-1_5x fa-fw"></i>'
 		if ( prog == "python" ) {
 			if ( cpu == "cortexM0" ) {
-				var cheminFirmware = chemin+"/compilation/python/firmware.hex"
+				var cheminFirmware = chemin+"../compilation/python/firmware.hex"
 				var fullHexStr = ""
 				exec('wmic logicaldisk get volumename', function(err, stdout){
 					if (err) return console.log(err)
@@ -342,12 +358,15 @@ window.addEventListener('load', function load(event){
 					itsOK(1)
 				})
 			} else {
-				exec('./flash.sh ' + com+ ' ' + carte , {cwd: chemin+'/compilation/arduino'} , function(err, stdout, stderr){
+				console.log('grabando hex');
+				var dir2=homedir+('/.masaylo/arduino/flash.sh ');
+				exec(dir2 + com+ ' ' + carte , {cwd: homedir+'/.masaylo/arduino'} , function(err, stdout, stderr){
 					console.log("Puerto: "+com)
 					var erreur = stderr.toString().replace(/##################################################/g,"").replace(/|/g,"")
 					var errors = erreur.split("avrdude:")
 					localStorage.setItem('detail', errors)
 					if (err) {
+						console.log('error flasheando');
 						messageDiv.style.color = '#ff0000'
 						messageDiv.innerHTML = err.toString() + "<br> "
 						btn_close_message.style.display = "inline"

@@ -1,8 +1,9 @@
 {
- "name": "Masaylo",
- "version": "1.0.2",
+ "name": "masaylo",
+ "version": "1.0.3",
  "description": "Entorno de desarrollo para programación en robótica",
- "author": "Antonio Gómez García y Lola Nogueras Atance, about a great job made by Fontaine Jean Philippe",
+ "author": "Antonio Gómez García y Lola Nogueras Atance, about a great job made by Fontaine Jean Philippe <antonio@aprendizdetecnologo.com>",
+ "email": "antonio@aprendizdetecnologo.com",
  "license": "CC0-1.0",
  "main": "electronAppLinux.js",
  "keywords": [
@@ -33,6 +34,7 @@
   "postinstall": "electron-builder install-app-deps",
   "start": "electron .",
   "compiler": "build --linux --x64",
+  "deb64": "electron-installer-debian --src dist/linux-unpacked --dest dist/installers/ --arch amd64",
   "publier": "build --linux --x64 -p always"
  },
  "build": {
@@ -42,6 +44,16 @@
    "buildResources": "./build",
    "output": "./dist"
   },
+  "files": [
+   "./compilation/**/*",
+   "./www/**/*",
+   "./pilotes/**/*",
+   "*.js",
+   "*.json",
+   "*.md",
+   "version",
+   "LICENSE"
+  ],
   "nsis": {
    "installerIcon": "build/installM.ico",
    "uninstallerIcon": "build/appM.ico",
@@ -58,6 +70,13 @@
     "portable"
    ],
    "icon": "build/appM2.ico"
+  },
+  "linux": {
+   "target": [
+    "dir",
+    "AppImage"
+   ],
+   "icon": "build/appM2.png"
   },
   "fileAssociations": [
    {
@@ -98,13 +117,23 @@
    }
   ],
   "extraFiles": [
-   {
-    "from": "www",
-    "to": "www",
+      {
+          "from":"./config.json",
+          "to":"resources/"
+      },
+      {
+    "from": "compilation",
+    "to": "resources/app/compilation",
     "filter": [
      "**/*"
     ]
-   }
+   },
+   
+   "README.md",
+   "LICENSE.md",
+   "config.json",
+   "version",
+   "LICENSE"
   ],
   "extraResources": [
    "dev-app-update.yml",
@@ -128,7 +157,8 @@
  },
  "devDependencies": {
   "electron": "4.1.1",
-  "electron-builder": "20.39.0"
+  "electron-builder": "20.39.0",
+  "electron-installer-debian": "^3.1.0"
  },
  "dependencies": {
   "ajv": "6.10.0",
