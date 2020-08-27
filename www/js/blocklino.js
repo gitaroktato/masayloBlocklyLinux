@@ -479,11 +479,8 @@ BlocklyDuino.apply_theme = function () {
 	var new_theme = $('#theme').val();
 	editor.setTheme('ace/theme/' + new_theme);
 	window.localStorage.theme = new_theme
-	if (new_theme == "monokai") {
-		BlocklyDuino.theme_monokai()
-	} else {
-		BlocklyDuino.theme_masaylo()
-	}
+	BlocklyDuino.theme_masaylo()
+
 }
 BlocklyDuino.checkAll = function () {
     if(this.checked) {
