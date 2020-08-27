@@ -60,7 +60,11 @@ BlocklyDuino.loadFile = function() {
 	if (urlFile.endsWith(".ino")) {
 		$.get(urlFile, function(data) {
 			if (content=="on") $('#codeORblock').bootstrapToggle("off")
-			editor.session.setMode("ace/mode/c_cpp");
+			editor.session.setMode("ace/mode/c_cpp");	if (new_theme == "monokai") {
+		BlocklyDuino.theme_monokai()
+	} else {
+		BlocklyDuino.theme_masaylo()
+	}
 			editor.setOptions({
 				enableBasicAutocompletion: true,
 				enableSnippets: true,
@@ -479,7 +483,11 @@ BlocklyDuino.apply_theme = function () {
 	var new_theme = $('#theme').val();
 	editor.setTheme('ace/theme/' + new_theme);
 	window.localStorage.theme = new_theme
-	BlocklyDuino.theme_masaylo()
+		if (new_theme == "monokai") {
+		BlocklyDuino.theme_monokai()
+	} else {
+		BlocklyDuino.theme_masaylo()
+	}
 
 }
 BlocklyDuino.checkAll = function () {
