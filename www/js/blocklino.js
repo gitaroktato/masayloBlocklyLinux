@@ -402,7 +402,7 @@ BlocklyDuino.code_block = function () {
 	}
 }
 BlocklyDuino.theme_monokai = function () {
-	document.getElementById("theme_css").href = "css/blocklino_monokai.css";
+	document.getElementById("theme_css").href = "css/blocklino_masaylo.css";
 	document.getElementById("btn_preview").className = document.getElementById("btn_preview").className.replace( /(?:^|\s)btn-default(?!\S)/g , ' btn-secondary' );
 	document.getElementById("btn_new").className = document.getElementById("btn_new").className.replace( /(?:^|\s)btn-default(?!\S)/g , ' btn-secondary' );
 	document.getElementById("btn_example").className = document.getElementById("btn_example").className.replace( /(?:^|\s)btn-default(?!\S)/g , ' btn-secondary' );
