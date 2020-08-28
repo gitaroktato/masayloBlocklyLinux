@@ -60,11 +60,7 @@ BlocklyDuino.loadFile = function() {
 	if (urlFile.endsWith(".ino")) {
 		$.get(urlFile, function(data) {
 			if (content=="on") $('#codeORblock').bootstrapToggle("off")
-			editor.session.setMode("ace/mode/c_cpp");	if (new_theme == "monokai") {
-		BlocklyDuino.theme_monokai()
-	} else {
-		BlocklyDuino.theme_masaylo()
-	}
+			editor.session.setMode("ace/mode/c_cpp");
 			editor.setOptions({
 				enableBasicAutocompletion: true,
 				enableSnippets: true,
@@ -402,7 +398,7 @@ BlocklyDuino.code_block = function () {
 	}
 }
 BlocklyDuino.theme_monokai = function () {
-	document.getElementById("theme_css").href = "css/blocklino_masaylo.css";
+	document.getElementById("theme_css").href = "css/blocklino_monokai.css";
 	document.getElementById("btn_preview").className = document.getElementById("btn_preview").className.replace( /(?:^|\s)btn-default(?!\S)/g , ' btn-secondary' );
 	document.getElementById("btn_new").className = document.getElementById("btn_new").className.replace( /(?:^|\s)btn-default(?!\S)/g , ' btn-secondary' );
 	document.getElementById("btn_example").className = document.getElementById("btn_example").className.replace( /(?:^|\s)btn-default(?!\S)/g , ' btn-secondary' );
@@ -483,12 +479,11 @@ BlocklyDuino.apply_theme = function () {
 	var new_theme = $('#theme').val();
 	editor.setTheme('ace/theme/' + new_theme);
 	window.localStorage.theme = new_theme
-		if (new_theme == "monokai") {
+	if (new_theme == "monokai") {
 		BlocklyDuino.theme_monokai()
 	} else {
 		BlocklyDuino.theme_masaylo()
 	}
-
 }
 BlocklyDuino.checkAll = function () {
     if(this.checked) {

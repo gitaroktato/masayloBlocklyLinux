@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <toolbox>
-	<parametre id="defaultCategories">CAT_MASAYLO,CAT_OTTO,CAT_OTTOH,CAT_ESCORNABOT,CAT_ARDUINO_BASICS,CAT_LOGIC,CAT_MATH,CAT_ARDUINO,CAT_VARIABLES,CAT_servo</parametre>
+	<parametre id="defaultCategories">CAT_MASAYLO,CAT_OTTO,CAT_OTTOH,CAT_ESCORNABOT,CAT_ARDUINO_BASICS,CAT_LOGIC,CAT_MATH,CAT_ARDUINO,CAT_VARIABLES,CAT_ARDUINO_TIME</parametre>
     <category name="CAT_ARDUINO" colour="#2d2d64">
 		<block type="base_begin"></block>
 		<block type="base_end"></block>

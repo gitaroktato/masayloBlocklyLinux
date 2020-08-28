@@ -5,15 +5,19 @@ var mainWindow, termWindow, factoryWindow, promptWindow, promptOptions, promptAn
 autoUpdater.autoDownload = false
 autoUpdater.logger = null
 function createWindow() {
-	mainWindow = new BrowserWindow({width: 1000, height: 625, icon: './www/media/icon.png', frame: false, movable: true})
+	mainWindow = new BrowserWindow({width: 1000, height: 625, icon: './www/media/icon.png', frame: false, movable: true,
+webPreferences:{
+	nodeIntegration:true
+}})
 	if (process.platform == 'win32' && process.argv.length >= 2) {
 		var file = process.argv[1]
 		if (file.endsWith(".bloc")||file.endsWith(".ino")||file.endsWith(".py")) {
-			mainWindow.loadURL(path.join(__dirname, '/www/index.html?url='+file))
+			mainWindow.loadURL(path.join(__dirname, './www/index.html?url='+file))
 		}
         if (file.endsWith(".www")||file.endsWith(".html")) {
-			mainWindow.loadURL(path.join(__dirname, '/www/ffau.html?url='+file))
+			mainWindow.loadURL(path.join(__dirname, './www/ffau.html?url='+file))
 		}
+		mainWindow.loadURL(path.join(__dirname, './www/index.html'))
 	} else {
 	mainWindow.loadURL('file://' + __dirname + '/www/index.html')
 	}
@@ -23,7 +27,10 @@ function createWindow() {
 	})
 }
 function createTerm() {
-	termWindow = new BrowserWindow({width: 640, height: 560, 'parent': mainWindow, resizable: false, movable: true, frame: false, modal: true})
+	termWindow = new BrowserWindow({width: 640, height: 560, 'parent': mainWindow, 
+	webPreferences:{
+		nodeIntegration:true
+	},resizable: false, movable: true, frame: false, modal: true})
 	termWindow.loadURL('file://' + __dirname + '/www/term.html')
 	termWindow.setMenu(null)
 	termWindow.on('closed', function () {
@@ -31,7 +38,10 @@ function createTerm() {
 	})
 }
 function createRepl() {
-	termWindow = new BrowserWindow({width: 640, height: 515, 'parent': mainWindow, resizable: false, movable: true, frame: false, modal: true})
+	termWindow = new BrowserWindow({width: 640, height: 515, 'parent': mainWindow,
+	webPreferences:{
+		nodeIntegration:true
+	}, resizable: false, movable: true, frame: false, modal: true})
 	termWindow.loadURL('file://' + __dirname + '/www/term.html')
 	termWindow.setMenu(null)
 	termWindow.on('closed', function () {
@@ -47,7 +57,11 @@ function createfactory() {
 	})
 }
 function createHTML() {
-	htmlWindow = new BrowserWindow({width: 1000, height: 625, resizable: true, movable: true, frame: false})
+	htmlWindow = new BrowserWindow({width: 1000, height: 625,
+		webPreferences:{
+			nodeIntegration:true
+		},
+		 resizable: true, movable: true, frame: false})
 	htmlWindow.loadURL('file://' + __dirname + '/www/fau.html')
 	htmlWindow.setMenu(null)
 	htmlWindow.on('closed', function () {
@@ -55,7 +69,11 @@ function createHTML() {
 	})
 }
 function createGames() {
-	gamesWindow = new BrowserWindow({width: 1000, height: 625, icon: '/www/media/gamepad.png', resizable: true, movable: true})
+	gamesWindow = new BrowserWindow({width: 1000, height: 625, icon: '/www/media/gamepad.png',
+	webPreferences:{
+		nodeIntegration:true
+	},
+	 resizable: true, movable: true})
 	gamesWindow.loadURL('file://' + __dirname + '/www/games/index.html')
 	gamesWindow.on('closed', function () {
 		gamesWindow = null
@@ -63,7 +81,11 @@ function createGames() {
 }
 function promptModal(options, callback) {
 	promptOptions = options
-	promptWindow = new BrowserWindow({width:360, height: 135, 'parent': mainWindow, resizable: false, movable: true, frame: false, modal: true})
+	promptWindow = new BrowserWindow({width:360, height: 135, 'parent': mainWindow
+	,webPreferences:{
+		nodeIntegration:true
+	},
+	 resizable: false, movable: true, frame: false, modal: true})
 	promptWindow.loadURL('file://' + __dirname + '/www/modalVar.html')
 	promptWindow.on('closed', function () {
 		promptWindow = null
@@ -133,9 +155,9 @@ ipcMain.on("modalVar", function(event, arg) {
 })
 ipcMain.on('save-bin', function(event) {
 	dialog.showSaveDialog(mainWindow,{
-		title: 'Exporter les binaires',
-		defaultPath: 'Programme.hex',
-		filters: [{ name: 'Binaires', extensions: ['hex']}]
+		title: 'Exportar los binarios',
+		defaultPath: 'Programa.hex',
+		filters: [{ name: 'Binarios', extensions: ['hex']}]
 	},
 	function(filename){
 		event.sender.send('saved-bin', filename)
@@ -143,8 +165,8 @@ ipcMain.on('save-bin', function(event) {
 })
 ipcMain.on('save-png', function(event) {
 	dialog.showSaveDialog(mainWindow,{
-		title: 'Enregistrer au format .PNG',
-		defaultPath: 'Capture',
+		title: 'Guardar en formato.PNG',
+		defaultPath: 'Captura',
 		filters: [{ name: 'Images', extensions: ['png'] }]
 	},
 	function(filename){
@@ -153,8 +175,8 @@ ipcMain.on('save-png', function(event) {
 })
 ipcMain.on('save-png-html', function(event) {
 	dialog.showSaveDialog(htmlWindow,{
-		title: 'Enregistrer au format .PNG',
-		defaultPath: 'Capture',
+		title: 'Guardar en formato .PNG',
+		defaultPath: 'Captura',
 		filters: [{ name: 'Images', extensions: ['png'] }]
 	},
 	function(filename){
@@ -163,8 +185,8 @@ ipcMain.on('save-png-html', function(event) {
 })
 ipcMain.on('save-png-factory', function(event) {
 	dialog.showSaveDialog(factoryWindow,{
-		title: 'Enregistrer au format .PNG',
-		defaultPath: 'Capture',
+		title: 'Guardar en formato .PNG',
+		defaultPath: 'Captura',
 		filters: [{ name: 'Images', extensions: ['png'] }]
 	},
 	function(filename){
@@ -173,8 +195,8 @@ ipcMain.on('save-png-factory', function(event) {
 })
 ipcMain.on('save-ino', function(event) {
 	dialog.showSaveDialog(mainWindow,{
-		title: 'Enregistrer au format .INO',
-		defaultPath: 'Programme',
+		title: 'Guardar en formato.INO',
+		defaultPath: 'Programa',
 		filters: [{ name: 'Arduino', extensions: ['ino'] }]
 	},
 	function(filename){
@@ -193,9 +215,9 @@ ipcMain.on('save-py', function(event) {
 })
 ipcMain.on('save-bloc', function(event) {
 	dialog.showSaveDialog(mainWindow,{
-		title: 'Enregistrer au format .BLOC',
-		defaultPath: 'Programme',
-		filters: [{ name: 'Blocklino', extensions: ['bloc'] }]
+		title: 'Guardar el diagrama .BLOC',
+		defaultPath: 'Programa',
+		filters: [{ name: 'MasayloBlockly', extensions: ['bloc'] }]
 	},
 	function(filename){
 		event.sender.send('saved-bloc', filename)
@@ -233,8 +255,8 @@ ipcMain.on('save-bf', function(event) {
 })
 ipcMain.on('save-csv', function(event) {
 	dialog.showSaveDialog(mainWindow,{
-		title: 'Exporter les données au format CSV',
-		defaultPath: 'Programme',
+		title: 'Guardar los datos en formato .CSV',
+		defaultPath: 'Programa',
 		filters: [{ name: 'donnees', extensions: ['csv'] }]
 	},
 	function(filename){

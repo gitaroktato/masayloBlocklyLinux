@@ -117,18 +117,17 @@
    }
   ],
   "extraFiles": [
-      {
-          "from":"./config.json",
-          "to":"resources/"
-      },
-      {
+   {
+    "from": "./config.json",
+    "to": "resources/"
+   },
+   {
     "from": "compilation",
     "to": "resources/app/compilation",
     "filter": [
      "**/*"
     ]
    },
-   
    "README.md",
    "LICENSE.md",
    "config.json",
@@ -156,16 +155,17 @@
   "url": "https://github.com/agomezgar/masayloBlockly"
  },
  "devDependencies": {
-  "electron": "4.1.1",
+  "electron": "^7.2.4",
   "electron-builder": "20.39.0",
   "electron-installer-debian": "^3.1.0"
  },
  "dependencies": {
-  "ajv": "6.10.0",
+  "ajv": "^6.10.0",
   "child_process": "1.0.2",
-  "electron-updater": "4.0.6",
+  "electron-updater": "^4.0.6",
   "ftp": "0.3.10",
-  "serialport": "7.1.4",
-  "tableify": "1.1.0"
+  "node-gyp": "^7.1.0",
+  "serialport": "^9.0.1",
+  "tableify": "^1.1.0"
  }
 }

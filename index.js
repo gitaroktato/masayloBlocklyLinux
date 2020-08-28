@@ -61,7 +61,8 @@ window.addEventListener('load', function load(event){
 			})
 		}
 	})
-	sp.list(function(err,ports){
+	//Former Electron version
+/* 	sp.list(function(err,ports){
 		var opt = document.createElement('option')
 		opt.value = "com"
 		opt.text = Blockly.Msg.com1
@@ -90,18 +91,48 @@ window.addEventListener('load', function load(event){
 			tableHTML = tableify(ports)
 			messageUSB.innerHTML = tableHTML
 		}
+	}) */
+	sp.list().then(ports => {
+		var opt = document.createElement('option')
+		opt.value = "com"
+		opt.text = Blockly.Msg.com1
+		portserie.appendChild(opt)
+		ports.forEach(function(port) {
+			if (port.vendorId){
+				var opt = document.createElement('option')
+				opt.value = port.path
+				opt.text = port.path
+				portserie.appendChild(opt)
+			}
+		});
+		localStorage.setItem("nb_com",ports.length)
+		if (portserie.options.length > 1) {
+			portserie.selectedIndex = 1
+			localStorage.setItem("com",portserie.options[1].value)
+		} else {
+			localStorage.setItem("com","com")
+		}
 	})
+	sp.list().then(ports => {
+		var messageUSB = document.getElementById('usb')
+		if (ports.length === 0) {
+			messageUSB.innerHTML = "Aucun port n'est disponible"
+		} else {
+			tableHTML = tableify(ports)
+			messageUSB.innerHTML = tableHTML
+		}
+	});
 	$('#portserie').mouseover(function(){
-		sp.list(function(err,ports) {
+		sp.list().then(ports =>  {
 			var nb_com = localStorage.getItem("nb_com"), menu_opt = portserie.getElementsByTagName('option')
 			if(ports.length > nb_com){
 				ports.forEach(function(port){
 					if (port.vendorId){
 						var opt = document.createElement('option')
-						opt.value = port.comName
-						opt.text = port.comName
+						opt.value = port.path
+						opt.text = port.path
 						portserie.appendChild(opt)
-						localStorage.setItem("com",port.comName)
+						localStorage.setItem("com",port.path)
 					}
 				})
 				localStorage.setItem("nb_com",ports.length)
@@ -114,7 +145,7 @@ window.addEventListener('load', function load(event){
 				localStorage.setItem("com","com")
 				localStorage.setItem("nb_com",ports.length)
 			}
-		})
+		});
 	})
 	$('#btn_quit').on('click', function(){
 		window.close()
@@ -207,13 +238,10 @@ window.addEventListener('load', function load(event){
 			})
 		} else {
 if(process!="win32"){
-	console.log("no es windows, ataca...");
+	
 	var dir=homedir+'/.masaylo';
-	console.log(dir);
 	if (!fs.existsSync(dir)){
-		console.log('preparandolo todo');
-		console.log('directorio actual: ');
-		console.log(__dirname);
+
 		var fuente=__dirname+('/compilation/');
 		
 		fs.mkdirSync(dir);
