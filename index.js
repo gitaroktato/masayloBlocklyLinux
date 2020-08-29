@@ -421,6 +421,7 @@ fs2.copy(fuente, dir, function (err) {
 	})
 	$('#btn_saveXML').on('click', function(){
 		if (localStorage.getItem("content") == "on") {
+			
 			ipcRenderer.send('save-bloc')
 		} else {
 			if (localStorage.getItem("prog") == "python") { ipcRenderer.send('save-py') } else { ipcRenderer.send('save-ino') }

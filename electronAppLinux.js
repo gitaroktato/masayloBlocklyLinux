@@ -164,13 +164,15 @@ ipcMain.on('save-bin', function(event) {
 	})
 })
 ipcMain.on('save-png', function(event) {
-	dialog.showSaveDialog(mainWindow,{
+	var archivo=dialog.showSaveDialog(mainWindow,{
 		title: 'Guardar en formato.PNG',
 		defaultPath: 'Captura',
 		filters: [{ name: 'Images', extensions: ['png'] }]
-	},
-	function(filename){
-		event.sender.send('saved-png', filename)
+	}
+	).then(result=>{
+		archivo=result.filePath;
+		event.sender.send('saved-png', archivo+'.png');
+
 	})
 })
 ipcMain.on('save-png-html', function(event) {
@@ -194,14 +196,16 @@ ipcMain.on('save-png-factory', function(event) {
 	})
 })
 ipcMain.on('save-ino', function(event) {
-	dialog.showSaveDialog(mainWindow,{
+	 var archivo=dialog.showSaveDialog(mainWindow,{
 		title: 'Guardar en formato.INO',
 		defaultPath: 'Programa',
 		filters: [{ name: 'Arduino', extensions: ['ino'] }]
-	},
-	function(filename){
-		event.sender.send('saved-ino', filename)
-	})
+	}).then(result=>{
+		archivo=result.filePath;
+		event.sender.send('saved-ino', archivo+'.ino');
+
+	});
+
 })
 ipcMain.on('save-py', function(event) {
 	dialog.showSaveDialog(mainWindow,{
@@ -214,14 +218,19 @@ ipcMain.on('save-py', function(event) {
 	})
 })
 ipcMain.on('save-bloc', function(event) {
-	dialog.showSaveDialog(mainWindow,{
+
+	var archivo=dialog.showSaveDialog(mainWindow,{
 		title: 'Guardar el diagrama .BLOC',
 		defaultPath: 'Programa',
 		filters: [{ name: 'MasayloBlockly', extensions: ['bloc'] }]
-	},
-	function(filename){
-		event.sender.send('saved-bloc', filename)
-	})
+	}).then(result => {
+		archivo=result.filePath;
+
+		event.sender.send('saved-bloc',archivo+'.bloc');
+
+	}
+)
+event.sender.send('saved-bloc',archivo);
 })
 ipcMain.on('save-html', function(event) {
 	dialog.showSaveDialog(htmlWindow,{
@@ -254,14 +263,15 @@ ipcMain.on('save-bf', function(event) {
 	})
 })
 ipcMain.on('save-csv', function(event) {
-	dialog.showSaveDialog(mainWindow,{
+	var archivo=dialog.showSaveDialog(mainWindow,{
 		title: 'Guardar los datos en formato .CSV',
 		defaultPath: 'Programa',
 		filters: [{ name: 'donnees', extensions: ['csv'] }]
-	},
-	function(filename){
-		event.sender.send('saved-csv', filename)
-	})
+	}).then(result=> {
+		archivo=result.filePath;
+		event.sender.send('saved-csv', archivo+'.csv');
+	}
+	)
 })
 ipcMain.on('addMedias', function(event) {
 	dialog.showOpenDialog(htmlWindow,{
