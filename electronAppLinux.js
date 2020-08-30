@@ -164,13 +164,15 @@ ipcMain.on('save-bin', function(event) {
 	})
 })
 ipcMain.on('save-png', function(event) {
-	dialog.showSaveDialog(mainWindow,{
+	var archivo=dialog.showSaveDialog(mainWindow,{
 		title: 'Guardar en formato.PNG',
 		defaultPath: 'Captura',
 		filters: [{ name: 'Images', extensions: ['png'] }]
-	},
-	function(filename){
-		event.sender.send('saved-png', filename)
+	}
+	).then(result=>{
+		archivo=result.filePath;
+		event.sender.send('saved-png', archivo+'.png');
+
 	})
 })
 ipcMain.on('save-png-html', function(event) {
@@ -261,14 +263,15 @@ ipcMain.on('save-bf', function(event) {
 	})
 })
 ipcMain.on('save-csv', function(event) {
-	dialog.showSaveDialog(mainWindow,{
+	var archivo=dialog.showSaveDialog(mainWindow,{
 		title: 'Guardar los datos en formato .CSV',
 		defaultPath: 'Programa',
 		filters: [{ name: 'donnees', extensions: ['csv'] }]
-	},
-	function(filename){
-		event.sender.send('saved-csv', filename)
-	})
+	}).then(result=> {
+		archivo=result.filePath;
+		event.sender.send('saved-csv', archivo+'.csv');
+	}
+	)
 })
 ipcMain.on('addMedias', function(event) {
 	dialog.showOpenDialog(htmlWindow,{

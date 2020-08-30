@@ -14,6 +14,48 @@ var detailDiv = document.getElementById('detailDIV')
 var btn_detail = document.getElementById('btn_detail')
 var btn_close_message = document.getElementById('btn_close_message')
 const homedir = require('os').homedir();
+const extract = require('extract-zip');
+function creaMasaylo(callback){
+	var fuente=__dirname+('/compilation/'); 
+	var dir=homedir+'/.masaylo';
+	fs.mkdirSync(dir,function(err){
+		if (err) {return console.error(err);}
+		else{console.log('directorio creado correctamente')};
+	});
+	fs2.copy(fuente, dir, function (err) {
+		if (err) return console.error(err)
+		console.log('Masaylo creado y compilación preparada!')
+	  })
+	callback;
+}
+function extraeLibrerias(data,libre){
+	var dir=homedir+'/.masaylo';
+	var source='./compilation/arduino/libraries.zip';
+	var exct=null;
+	try {
+		 extract(source, { dir: homedir+'/Arduino/' },function(err){
+			 if (err){
+				 console.log(err);
+			 }else{
+				console.log('Extraction complete');
+		fs.writeFile(homedir+'/.masaylo/arduino/sketch/sketch.ino', data, function(err){
+			if (err) return console.log('error: '+err)
+		})
+			 }
+		 })
+		
+
+		libre;
+	  } catch (err) {
+		// handle any errors
+		console.log(err);
+	  }
+	 
+	}
+
+	function libre(){
+		alert('Espera algunos segundos y vuelve a compilar. (No lo ha hecho bien esta primera vez, a pesar del mensaje). Todo debería ir bien a partir de ahora');
+	}
 
 window.addEventListener('load', function load(event){
 	var window = remote.getCurrentWindow()
@@ -241,19 +283,12 @@ if(process!="win32"){
 	
 	var dir=homedir+'/.masaylo';
 	if (!fs.existsSync(dir)){
-
-		var fuente=__dirname+('/compilation/');
-		
-		fs.mkdirSync(dir);
-		
-fs2.copy(fuente, dir, function (err) {
-	if (err) return console.error(err)
-	console.log('success!')
-  });
+//Creamos un directorio auxiliar en home
+alert('Un momentín, que hay que instalar las librerías...');
+creaMasaylo(extraeLibrerias(data,libre()));
 	}
-	}	fs.writeFile(homedir+'/.masaylo/arduino/sketch/sketch.ino', data, function(err){
-				if (err) return console.log('error nuevo'+homedir+'/.masaylo/arduino/sketch/sketch.ino')
-			})
+
+}
 			if ( cpu == "cortexM0" ) {
 				exec('verify_microbit.bat ' + carte, {cwd: chemin+'/compilation/arduino'}, function(err, stdout, stderr){
 					if (stderr) {
@@ -274,6 +309,9 @@ fs2.copy(fuente, dir, function (err) {
 					itsOK(0)
 				})
 			} else {
+				fs.writeFile(homedir+'/.masaylo/arduino/sketch/sketch.ino', data, function(err){
+					if (err) return console.log('error nuevo'+homedir+'/.masaylo/arduino/sketch/sketch.ino')
+				})
 				exec('./verify.sh ' + carte, {cwd: homedir+'/.masaylo/arduino/'}, function(err, stdout, stderr){
 					if (err) console.log('err0r: ' +carte);
 					if (stderr) {
