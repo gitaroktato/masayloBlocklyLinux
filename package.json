@@ -167,6 +167,7 @@
   "ftp": "0.3.10",
   "node-gyp": "^7.1.0",
   "serialport": "^9.0.1",
-  "tableify": "^1.1.0"
+  "tableify": "^1.1.0",
+  "extract-zip": "^2.0.1"
  }
 }
