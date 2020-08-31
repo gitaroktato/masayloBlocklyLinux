@@ -15,38 +15,88 @@ var btn_detail = document.getElementById('btn_detail')
 var btn_close_message = document.getElementById('btn_close_message')
 const homedir = require('os').homedir();
 const extract = require('extract-zip');
-function creaMasaylo(callback){
+//Pendiente de resolver la sincronicidad
+function instalarArduino(callback1, callback2, callback3,callback4,callback5){
+    //código de la función principal
+    callback1();
+    //más código de la función principal
+    callback2();
+    //más código de la función principal
+    callback3();
+	//más código si fuera necesario
+	callback4();
+	callback5();
+}
+ 
+function callback1(){
+        creaMasaylo();
+    }
+ 
+function callback2(){
+       copiaArchivosCompilacion();
+    }
+ 
+function callback3(){
+       actualizaTarjetasArduino();
+	}   
+	function callback4(){
+extraeLibrerias();	 }
+
+	 function callback5(){
+		terminado();
+	 }   
+ 
+function creaMasaylo(){
+	//Creamos un directorio auxiliar en home
+alert('Es la primera vez que ejecutas este programa. Hay que utilizar algunas librerías. Espera '+
+'unos segundos y vuelve a compilar (si te da mensaje de error, espera un poco más y vuelve a intentarlo)...');
+	var dir=homedir+'/.masaylo';
+	fs.mkdirSync(dir,function(err,stdout){
+		if (err) {return console.error(err);}
+		else{console.log('1. directorio creado correctamente: '+stdout);
+	};
+	});
+	
+
+}
+function copiaArchivosCompilacion(){
 	var fuente=__dirname+('/compilation/'); 
 	var dir=homedir+'/.masaylo';
-	fs.mkdirSync(dir,function(err){
-		if (err) {return console.error(err);}
-		else{console.log('directorio creado correctamente')};
-	});
-	fs2.copy(fuente, dir, function (err) {
+
+	fs2.copy(fuente, dir, function (err,stdout) {
 		if (err) return console.error(err)
-		console.log('Masaylo creado y compilación preparada!')
+		console.log('2. Masaylo creado y carpeta de compilación creada!'+stdout);
 	  })
-	callback;
+	
+
 }
-function extraeLibrerias(data,libre){
+function actualizaTarjetasArduino(){
+	console.log('directorio: '+__dirname+'/compilation/arduino/');
+	exec('./arduino-cli core update-index && ./arduino-cli core install arduino:avr', {cwd: __dirname+'/compilation/arduino/'}, function(err, stdout, stderr){
+		if (err) console.log('error installando arduino: ' +err);
+		
+	console.log(stdout);
+	});
+
+}
+function extraeLibrerias(){
 	var dir=homedir+'/.masaylo';
 	var source=__dirname+'/compilation/arduino/libraries.zip';
 	var exct=null;
 	try {
-		 extract(source, { dir: homedir+'/Arduino/' },function(err){
+		console.log('4. iniciando extracción');
+		 extract(source, { dir: homedir+'/Arduino/' },function(err,stdout){
 			 if (err){
 				 console.log(err);
 			 }else{
-				console.log('Extraction complete');
-		fs.writeFile(homedir+'/.masaylo/arduino/sketch/sketch.ino', data, function(err){
-			if (err) return console.log('error: '+err)
-		})
+				console.log(stdout);
+				alert('4. librerías extraídas. Los robots deberían funcionar con normalidad')
+
 
 			 }
 		 })
 		
-
-		libre;
+	
 	  } catch (err) {
 		// handle any errors
 		console.log(err);
@@ -54,10 +104,17 @@ function extraeLibrerias(data,libre){
 	 
 	}
 
-	function libre(){
-		alert('Espera algunos segundos y vuelve a compilar. (No lo ha hecho bien esta primera vez, a pesar del mensaje). Todo debería ir bien a partir de ahora');
-	}
+function terminado(){
+	console.log('5. vamos terminando');
 
+/* 	fs.writeFile(homedir+'/.masaylo/arduino/sketch/sketch.ino', data, function(err,stdout){
+		if (err) return console.log('error: '+err)
+		console.log('copiando sketch: '+stdout);
+		alert('ahora sí se ha copiado el sketch. Puedes cargarlo en tarjeta');
+	}) */
+
+
+}
 window.addEventListener('load', function load(event){
 	var window = remote.getCurrentWindow()
 	if(!window.isMaximized())window.maximize()
@@ -284,16 +341,15 @@ if(process!="win32"){
 	
 	var dir=homedir+'/.masaylo';
 	if (!fs.existsSync(dir)){
-//Creamos un directorio auxiliar en home
-alert('Un momentín, que hay que instalar las librerías...');
-console.log('directorio: '+__dirname+'/compilation/arduino/');
-exec('./arduino-cli core update-index && ./arduino-cli core install arduino:avr', {cwd: __dirname+'/compilation/arduino/'}, function(err, stdout, stderr){
-	if (err) console.log('error installando arduino: ' +err);
-	
 
-})
-creaMasaylo(extraeLibrerias(data,libre()));
-	}
+messageDiv.innerHTML='Espere unos segundos y vuelva a intentar compilar';
+btn_close_message.style.display = "inline"
+
+//creaMasaylo().then(copiaArchivosCompilacion().then(actualizaTarjetasArduino().then(extraeLibrerias().then(terminado(data)))));
+instalarArduino(callback1, callback2, callback3,callback4,callback5);
+
+return;	
+}
 
 }
 			if ( cpu == "cortexM0" ) {
