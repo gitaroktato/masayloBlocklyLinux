@@ -30,7 +30,7 @@ function creaMasaylo(callback){
 }
 function extraeLibrerias(data,libre){
 	var dir=homedir+'/.masaylo';
-	var source='./compilation/arduino/libraries.zip';
+	var source=__dirname+'/compilation/arduino/libraries.zip';
 	var exct=null;
 	try {
 		 extract(source, { dir: homedir+'/Arduino/' },function(err){
@@ -41,6 +41,7 @@ function extraeLibrerias(data,libre){
 		fs.writeFile(homedir+'/.masaylo/arduino/sketch/sketch.ino', data, function(err){
 			if (err) return console.log('error: '+err)
 		})
+
 			 }
 		 })
 		
@@ -285,6 +286,12 @@ if(process!="win32"){
 	if (!fs.existsSync(dir)){
 //Creamos un directorio auxiliar en home
 alert('Un momentín, que hay que instalar las librerías...');
+console.log('directorio: '+__dirname+'/compilation/arduino/');
+exec('./arduino-cli core update-index && ./arduino-cli core install arduino:avr', {cwd: __dirname+'/compilation/arduino/'}, function(err, stdout, stderr){
+	if (err) console.log('error installando arduino: ' +err);
+	
+
+})
 creaMasaylo(extraeLibrerias(data,libre()));
 	}
 
