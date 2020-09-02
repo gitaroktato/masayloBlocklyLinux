@@ -150,7 +150,7 @@ BlocklyDuino.loadConfig = function() {
 	var card = window.localStorage.card;
 	var content = window.localStorage.content;
 	var prog = window.localStorage.prog;
-	var theme = window.localStorage.theme;
+	var theme = 'masaylo';
 	var size = window.localStorage.size;
 	if (card===undefined) {
 		window.localStorage.card = BlocklyDuino.selectedCard;
